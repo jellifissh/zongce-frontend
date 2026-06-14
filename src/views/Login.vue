@@ -321,7 +321,7 @@ const handleLogin = async () => {
     radial-gradient(circle at 16% 12%, rgba(109, 158, 235, 0.28), transparent 28%),
     radial-gradient(circle at 88% 18%, rgba(90, 187, 150, 0.22), transparent 24%),
     linear-gradient(135deg, #0f2744 0%, #1e4975 52%, #102844 100%);
-  padding: 24px;
+  padding: 18px;
   position: relative;
   overflow: hidden;
 }
@@ -351,10 +351,10 @@ const handleLogin = async () => {
 }
 
 .login-shell {
-  width: min(1060px, 100%);
-  max-height: calc(100vh - 48px);
+  width: min(1240px, 100%);
+  max-height: calc(100vh - 36px);
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-columns: 0.95fr 1.25fr;
   border-radius: 30px;
   overflow: hidden;
   background: rgba(255, 255, 255, 0.92);
@@ -366,7 +366,7 @@ const handleLogin = async () => {
 }
 
 .brand-panel {
-  padding: 38px;
+  padding: 44px 46px;
   color: #ffffff;
   background:
     linear-gradient(145deg, rgba(18, 50, 84, 0.96), rgba(32, 85, 134, 0.92)),
@@ -399,14 +399,14 @@ const handleLogin = async () => {
 }
 
 .brand-main h1 {
-  font-size: 32px;
+  font-size: 34px;
   line-height: 1.2;
   letter-spacing: 1px;
   margin-bottom: 14px;
 }
 
 .brand-main p {
-  max-width: 360px;
+  max-width: 420px;
   color: rgba(255, 255, 255, 0.78);
   line-height: 1.8;
   font-size: 15px;
@@ -436,7 +436,7 @@ const handleLogin = async () => {
 }
 
 .form-panel {
-  padding: 30px 34px;
+  padding: 34px 42px;
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 251, 255, 0.98));
   overflow: auto;
 }
@@ -457,7 +457,7 @@ const handleLogin = async () => {
 
 .form-title-row h2 {
   color: #17375f;
-  font-size: 25px;
+  font-size: 27px;
   line-height: 1.25;
 }
 
@@ -532,7 +532,7 @@ const handleLogin = async () => {
 
 .score-block {
   display: grid;
-  grid-template-columns: 1fr 170px;
+  grid-template-columns: 1fr 200px;
   gap: 12px;
   align-items: stretch;
   margin-bottom: 12px;
@@ -578,7 +578,7 @@ const handleLogin = async () => {
   border-radius: 18px;
   background: linear-gradient(145deg, #eaf4ff, #f5fbff);
   border: 1px solid #d7e8fa;
-  padding: 14px;
+  padding: 16px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -592,7 +592,7 @@ const handleLogin = async () => {
 
 .score-summary strong {
   color: #17375f;
-  font-size: 28px;
+  font-size: 31px;
   line-height: 1.1;
 }
 
@@ -696,8 +696,8 @@ const handleLogin = async () => {
 }
 
 .submit-btn {
-  min-width: 170px;
-  height: 46px;
+  min-width: 190px;
+  height: 48px;
   border: none;
   border-radius: 14px;
   background: linear-gradient(135deg, #17375f, #2d6c9f);
