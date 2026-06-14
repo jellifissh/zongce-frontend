@@ -1,77 +1,101 @@
 <template>
   <div class="login-page">
-    <div class="login-card">
-      <div class="login-header">
-        <div class="header-icon">🎓</div>
-        <h1 class="header-title">综测服务智能体</h1>
-      </div>
+    <div class="orb orb-one"></div>
+    <div class="orb orb-two"></div>
 
-      <el-form
-        :model="form"
-        :rules="dynamicRules"
-        ref="loginFormRef"
-        class="login-form"
-      >
-        <!-- 学号 -->
-        <el-form-item prop="studentId">
-          <div class="form-row">
-            <span class="form-label">学号</span>
-            <el-input
-              v-model="form.studentId"
-              placeholder="学生请输入学号，管理员输入 admin"
-              size="large"
-              class="form-input"
-            />
-          </div>
-        </el-form-item>
-
-        <!-- QQ号 -->
-        <el-form-item prop="qq">
-          <div class="form-row">
-            <span class="form-label">QQ号</span>
-            <el-input
-              v-model="form.qq"
-              placeholder="请输入QQ号"
-              size="large"
-              class="form-input"
-            />
-          </div>
-        </el-form-item>
-
-        <!-- 管理员提示 -->
-        <el-alert
-          v-if="isAdmin"
-          title="管理员模式"
-          description="已识别为管理员账号，点击进入将跳转至管理端"
-          type="info"
-          :closable="false"
-          show-icon
-          class="admin-hint"
-        />
-
-        <!-- 学生管理员提示 -->
-        <el-alert
-          v-if="isStudentAdmin"
-          title="学生管理员模式"
-          description="已识别为学生管理员账号，具有学生身份和管理权限"
-          type="warning"
-          :closable="false"
-          show-icon
-          class="admin-hint"
-        />
-
-        <!-- 分割线 -->
-        <div v-if="!isAdmin" class="divider">
-          <span class="divider-text">以下首次登录填写</span>
+    <div class="login-shell">
+      <section class="brand-panel">
+        <div class="brand-badge">AI · 综测助手</div>
+        <div class="brand-main">
+          <div class="brand-icon">🎓</div>
+          <h1>综测服务智能体</h1>
+          <p>查活动、算综测、做规划、设提醒，一个入口搞定，终于不用在表格和通知群里考古了。</p>
         </div>
 
-        <!-- ABCD四类素质分 -->
-        <template v-if="!isAdmin">
-          <el-form-item label="素质分" prop="scoreA">
-            <div class="score-inputs">
-              <div class="score-row">
-                <div class="score-item">
-                  <span class="score-label-a">A类·思想品德</span>
+        <div class="feature-grid">
+          <div class="feature-card">
+            <strong>4 类分数</strong>
+            <span>A/B/C/D 权重实时计算</span>
+          </div>
+          <div class="feature-card">
+            <strong>智能推荐</strong>
+            <span>按缺口匹配活动</span>
+          </div>
+          <div class="feature-card">
+            <strong>活动提醒</strong>
+            <span>截止前自动提醒</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="form-panel">
+        <div class="form-title-row">
+          <div>
+            <p class="eyebrow">登录入口</p>
+            <h2>{{ isAdmin ? '进入管理端' : isStudentAdmin ? '学生管理员入口' : '学生信息确认' }}</h2>
+          </div>
+          <span class="mode-pill">{{ isAdmin ? '管理员' : isStudentAdmin ? '学生管理员' : '学生' }}</span>
+        </div>
+
+        <el-form
+          :model="form"
+          :rules="dynamicRules"
+          ref="loginFormRef"
+          class="login-form"
+          label-position="top"
+        >
+          <div class="top-fields">
+            <el-form-item prop="studentId" class="clean-form-item">
+              <template #label>学号</template>
+              <el-input
+                v-model="form.studentId"
+                placeholder="学生输入学号，管理员输入 admin"
+                size="large"
+                class="soft-input"
+              />
+            </el-form-item>
+
+            <el-form-item prop="qq" class="clean-form-item">
+              <template #label>QQ号</template>
+              <el-input
+                v-model="form.qq"
+                placeholder="请输入QQ号"
+                size="large"
+                class="soft-input"
+              />
+            </el-form-item>
+          </div>
+
+          <el-alert
+            v-if="isAdmin"
+            title="已识别为管理员账号"
+            description="点击进入后跳转至活动管理端，可维护活动信息。"
+            type="info"
+            :closable="false"
+            show-icon
+            class="mode-hint"
+          />
+
+          <el-alert
+            v-if="isStudentAdmin"
+            title="已识别为学生管理员账号"
+            description="具有学生身份和管理权限，可用于演示双端能力。"
+            type="warning"
+            :closable="false"
+            show-icon
+            class="mode-hint"
+          />
+
+          <template v-if="!isAdmin">
+            <div class="section-head">
+              <span>首次登录信息</span>
+              <small>全部内容压缩在一屏里，终于不用滚动考验鼠标寿命。</small>
+            </div>
+
+            <div class="score-block">
+              <div class="score-grid">
+                <div class="score-card score-a">
+                  <span>A类·思想品德</span>
                   <el-input-number
                     v-model="form.scoreA"
                     :min="0"
@@ -80,8 +104,8 @@
                     class="score-number"
                   />
                 </div>
-                <div class="score-item">
-                  <span class="score-label-b">B类·科学文化</span>
+                <div class="score-card score-b">
+                  <span>B类·科学文化</span>
                   <el-input-number
                     v-model="form.scoreB"
                     :min="0"
@@ -90,10 +114,8 @@
                     class="score-number"
                   />
                 </div>
-              </div>
-              <div class="score-row">
-                <div class="score-item">
-                  <span class="score-label-c">C类·身体心理</span>
+                <div class="score-card score-c">
+                  <span>C类·身体心理</span>
                   <el-input-number
                     v-model="form.scoreC"
                     :min="0"
@@ -102,8 +124,8 @@
                     class="score-number"
                   />
                 </div>
-                <div class="score-item">
-                  <span class="score-label-d">D类·劳动实践</span>
+                <div class="score-card score-d">
+                  <span>D类·劳动实践</span>
                   <el-input-number
                     v-model="form.scoreD"
                     :min="0"
@@ -113,64 +135,56 @@
                   />
                 </div>
               </div>
+
               <div class="score-summary">
-                <span class="summary-text">
-                  总分：<strong>{{ totalScore }}</strong> 分
-                  （基础分：A类默认50，B类默认50，C/D类默认0）
-                </span>
+                <span>当前总分</span>
+                <strong>{{ totalScore }}</strong>
+                <small>基础分：A/B 默认 50，C/D 默认 0</small>
               </div>
             </div>
-          </el-form-item>
-        </template>
 
-        <!-- 年级选择 -->
-        <el-form-item v-if="!isAdmin" label="年级" prop="grade">
-          <el-radio-group v-model="form.grade" class="grade-group">
-            <el-radio-button value="大一">大一</el-radio-button>
-            <el-radio-button value="大二">大二</el-radio-button>
-            <el-radio-button value="大三">大三</el-radio-button>
-            <el-radio-button value="大四">大四</el-radio-button>
-          </el-radio-group>
-        </el-form-item>
+            <div class="preference-grid">
+              <el-form-item label="年级" prop="grade" class="clean-form-item">
+                <el-radio-group v-model="form.grade" class="grade-group">
+                  <el-radio-button value="大一">大一</el-radio-button>
+                  <el-radio-button value="大二">大二</el-radio-button>
+                  <el-radio-button value="大三">大三</el-radio-button>
+                  <el-radio-button value="大四">大四</el-radio-button>
+                </el-radio-group>
+              </el-form-item>
 
-        <!-- 感兴趣的活动类型 -->
-        <el-form-item v-if="!isAdmin" label="感兴趣的活动类型" prop="interests" class="interest-item">
-          <div class="interest-label-sub">可多选</div>
-          <div class="interest-list">
-            <el-checkbox
-              v-for="item in interestOptions"
-              :key="item.value"
-              v-model="form.interests"
-              :value="item.value"
-              class="interest-checkbox"
+              <el-form-item label="感兴趣的活动类型" prop="interests" class="clean-form-item">
+                <el-checkbox-group v-model="form.interests" class="interest-grid">
+                  <el-checkbox
+                    v-for="item in interestOptions"
+                    :key="item.value"
+                    :label="item.value"
+                    class="interest-card"
+                  >
+                    <span class="interest-name">{{ item.label }}</span>
+                    <span class="interest-desc">{{ item.desc }}</span>
+                  </el-checkbox>
+                </el-checkbox-group>
+              </el-form-item>
+            </div>
+          </template>
+
+          <div class="submit-row">
+            <el-button
+              type="primary"
+              size="large"
+              class="submit-btn"
+              :loading="loading"
+              @click="handleLogin"
             >
-              <div class="checkbox-content">
-                <span class="checkbox-name">{{ item.label }}</span>
-                <span class="checkbox-desc">{{ item.desc }}</span>
-              </div>
-            </el-checkbox>
+              {{ isAdmin ? '进入管理端' : '进入学生端' }}
+            </el-button>
+            <p class="footer-hint">
+              管理员：<code>admin</code>　学生管理员：<code>stuadmin1</code>
+            </p>
           </div>
-        </el-form-item>
-
-        <!-- 进入按钮 -->
-        <el-form-item class="submit-item">
-          <el-button
-            type="primary"
-            size="large"
-            class="submit-btn"
-            :loading="loading"
-            @click="handleLogin"
-          >
-            {{ isAdmin ? '进入管理端' : '进入' }}
-          </el-button>
-        </el-form-item>
-
-        <!-- 底部提示 -->
-        <div class="footer-hint">
-          <p>首次登录后，ABCD分数可在学生端"我的分数"中随时调整</p>
-          <p>管理员账号输入学号：<code>admin</code> | 学生管理员输入学号：<code>stuadmin1</code></p>
-        </div>
-      </el-form>
+        </el-form>
+      </section>
     </div>
   </div>
 </template>
@@ -203,10 +217,6 @@ const isStudentAdmin = computed(() => {
   return form.studentId.toLowerCase().includes('stuadmin')
 })
 
-const isNormalStudent = computed(() => {
-  return !isAdmin.value && !isStudentAdmin.value && form.studentId.length > 0
-})
-
 const totalScore = computed(() => {
   return (form.scoreA * 0.35 + form.scoreB * 0.30 + form.scoreC * 0.20 + form.scoreD * 0.15).toFixed(2)
 })
@@ -221,13 +231,13 @@ const dynamicRules = computed(() => {
       { required: true, message: '请输入QQ号', trigger: 'blur' }
     ]
   }
-  // 管理员不需要填写年级和兴趣，学生和学生管理员需要
+
   if (!isAdmin.value) {
     base.grade = [
       { required: true, message: '请选择年级', trigger: 'change' }
     ]
     base.interests = [
-      { required: true, message: '请至少选择一个感兴趣的活动类型', trigger: 'change' }
+      { type: 'array', required: true, min: 1, message: '请至少选择一个感兴趣的活动类型', trigger: 'change' }
     ]
   }
   return base
@@ -272,7 +282,6 @@ const handleLogin = async () => {
         }
 
         const data = await res.json()
-        // 保存用户信息到 localStorage
         localStorage.setItem('studentInfo', JSON.stringify({
           studentId: data.student_id,
           name: data.name,
@@ -289,7 +298,6 @@ const handleLogin = async () => {
         }))
 
         ElMessage.success('登录成功！')
-        // 根据后端返回的 redirect 跳转
         router.push(data.redirect)
         loading.value = false
       } catch (err) {
@@ -305,397 +313,477 @@ const handleLogin = async () => {
 <style scoped>
 .login-page {
   min-height: 100vh;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #1e3a5f 0%, #2d5a8e 50%, #1e3a5f 100%);
-  padding: 20px;
+  background:
+    radial-gradient(circle at 16% 12%, rgba(109, 158, 235, 0.28), transparent 28%),
+    radial-gradient(circle at 88% 18%, rgba(90, 187, 150, 0.22), transparent 24%),
+    linear-gradient(135deg, #0f2744 0%, #1e4975 52%, #102844 100%);
+  padding: 24px;
   position: relative;
   overflow: hidden;
 }
 
-.login-page::before {
-  content: '';
+.orb {
   position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
-  animation: rotate 30s linear infinite;
+  border-radius: 999px;
+  filter: blur(2px);
+  opacity: 0.45;
+  pointer-events: none;
 }
 
-@keyframes rotate {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.orb-one {
+  width: 220px;
+  height: 220px;
+  left: -60px;
+  bottom: 8%;
+  background: rgba(255, 255, 255, 0.15);
 }
 
-.login-card {
-  background: #ffffff;
-  border-radius: 16px;
-  padding: 48px 44px;
-  width: 100%;
-  max-width: 520px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+.orb-two {
+  width: 320px;
+  height: 320px;
+  right: -120px;
+  top: -80px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.login-shell {
+  width: min(1060px, 100%);
+  max-height: calc(100vh - 48px);
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  border-radius: 30px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.28);
+  backdrop-filter: blur(18px);
   position: relative;
   z-index: 1;
 }
 
-.login-header {
-  text-align: center;
-  margin-bottom: 40px;
+.brand-panel {
+  padding: 38px;
+  color: #ffffff;
+  background:
+    linear-gradient(145deg, rgba(18, 50, 84, 0.96), rgba(32, 85, 134, 0.92)),
+    radial-gradient(circle at top right, rgba(255, 255, 255, 0.24), transparent 38%);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
 }
 
-.header-icon {
-  font-size: 56px;
-  margin-bottom: 12px;
-  animation: float 3s ease-in-out infinite;
+.brand-badge {
+  width: fit-content;
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 13px;
+  letter-spacing: 0.5px;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+.brand-icon {
+  width: 64px;
+  height: 64px;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.14);
+  font-size: 34px;
+  margin-bottom: 18px;
 }
 
-.header-title {
-  font-size: 26px;
-  font-weight: 600;
-  color: #1e3a5f;
-  letter-spacing: 2px;
+.brand-main h1 {
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: 1px;
+  margin-bottom: 14px;
 }
 
-.login-form {
-  width: 100%;
+.brand-main p {
+  max-width: 360px;
+  color: rgba(255, 255, 255, 0.78);
+  line-height: 1.8;
+  font-size: 15px;
+}
+
+.feature-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.feature-card {
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.feature-card strong {
+  display: block;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+.feature-card span {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 13px;
+}
+
+.form-panel {
+  padding: 30px 34px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(248, 251, 255, 0.98));
+  overflow: auto;
+}
+
+.form-title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.eyebrow {
+  color: #6d86a5;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.form-title-row h2 {
+  color: #17375f;
+  font-size: 25px;
+  line-height: 1.25;
+}
+
+.mode-pill {
+  padding: 8px 14px;
+  border-radius: 999px;
+  background: #eaf3ff;
+  color: #1e5a92;
+  font-weight: 700;
+  font-size: 13px;
+  white-space: nowrap;
 }
 
 .login-form :deep(.el-form-item) {
-  margin-bottom: 24px;
+  margin-bottom: 14px;
 }
 
-.login-form :deep(.el-form-item__label) {
-  font-size: 15px;
-  font-weight: 500;
-  color: #2c3e50;
-  padding-bottom: 8px;
-}
-
-.admin-hint {
-  border-radius: 10px;
-  margin-bottom: 24px;
-}
-
-.form-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  width: 100%;
-}
-
-.form-label {
-  width: 60px;
-  text-align: right;
-  font-size: 15px;
-  font-weight: 500;
-  color: #5a6d7e;
-  flex-shrink: 0;
-}
-
-.form-input {
-  flex: 1;
-}
-
-.form-input :deep(.el-input__wrapper) {
-  border-radius: 10px;
-  padding: 6px 14px;
-  box-shadow: none;
-  border: 1px solid #e8e4db;
-  transition: all 0.3s;
-}
-
-.form-input :deep(.el-input__wrapper:hover) {
-  border-color: #1e3a5f;
-}
-
-.form-input :deep(.el-input__wrapper.is-focus) {
-  border-color: #1e3a5f;
-  box-shadow: 0 0 0 3px rgba(30, 58, 95, 0.1);
-}
-
-/* 分割线 */
-.divider {
-  display: flex;
-  align-items: center;
-  margin: 32px 0;
-}
-
-.divider::before,
-.divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: linear-gradient(to right, transparent, #e8e4db, transparent);
-}
-
-.divider-text {
-  padding: 0 16px;
+.clean-form-item :deep(.el-form-item__label) {
+  color: #526b86;
+  font-weight: 700;
   font-size: 13px;
-  color: #8b9aab;
-  white-space: nowrap;
+  line-height: 1;
+  margin-bottom: 8px;
 }
 
-/* ABCD素质分 */
-.score-inputs {
-  width: 100%;
+.top-fields {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 14px;
 }
 
-.score-row {
+.soft-input :deep(.el-input__wrapper) {
+  min-height: 44px;
+  border-radius: 14px;
+  box-shadow: none;
+  border: 1px solid #dce6f2;
+  background: #ffffff;
+  transition: all 0.2s ease;
+}
+
+.soft-input :deep(.el-input__wrapper:hover),
+.soft-input :deep(.el-input__wrapper.is-focus) {
+  border-color: #2f6fa5;
+  box-shadow: 0 0 0 4px rgba(47, 111, 165, 0.1);
+}
+
+.mode-hint {
+  border-radius: 14px;
+  margin: 6px 0 14px;
+}
+
+.section-head {
   display: flex;
+  align-items: center;
+  justify-content: space-between;
   gap: 16px;
+  margin: 4px 0 12px;
+  padding-top: 12px;
+  border-top: 1px solid #edf2f7;
+}
+
+.section-head span {
+  font-weight: 800;
+  color: #17375f;
+  font-size: 15px;
+}
+
+.section-head small {
+  color: #8aa0b6;
+  font-size: 12px;
+}
+
+.score-block {
+  display: grid;
+  grid-template-columns: 1fr 170px;
+  gap: 12px;
+  align-items: stretch;
   margin-bottom: 12px;
 }
 
-.score-item {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+.score-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.score-card {
   padding: 12px;
-  background: #faf9f7;
-  border-radius: 10px;
-  border: 1px solid #f0ece6;
-  transition: all 0.2s;
+  border-radius: 16px;
+  background: #ffffff;
+  border: 1px solid #e5edf6;
+  box-shadow: 0 8px 22px rgba(20, 61, 103, 0.05);
 }
 
-.score-item:hover {
-  border-color: #e2dcd2;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-}
-
-.score-label-a,
-.score-label-b,
-.score-label-c,
-.score-label-d {
+.score-card span {
+  display: block;
+  margin-bottom: 8px;
   font-size: 13px;
-  font-weight: 600;
-  white-space: nowrap;
+  font-weight: 800;
 }
 
-.score-label-a { color: #F39C12; }
-.score-label-b { color: #27AE60; }
-.score-label-c { color: #3498DB; }
-.score-label-d { color: #E67E22; }
+.score-a span { color: #d98910; }
+.score-b span { color: #24965b; }
+.score-c span { color: #2b82c9; }
+.score-d span { color: #df7723; }
 
 .score-number {
   width: 100%;
 }
 
 .score-number :deep(.el-input__wrapper) {
-  border-radius: 8px;
+  border-radius: 12px;
   box-shadow: none;
-  border: 1px solid #e8e4db;
-}
-
-.score-number :deep(.el-input__wrapper.is-focus) {
-  border-color: #1e3a5f;
-  box-shadow: 0 0 0 2px rgba(30, 58, 95, 0.08);
+  border: 1px solid #e2eaf4;
 }
 
 .score-summary {
-  text-align: center;
-  padding: 12px;
-  background: #e8f0f8;
-  border-radius: 8px;
-  margin-top: 8px;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #eaf4ff, #f5fbff);
+  border: 1px solid #d7e8fa;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
 }
 
-.summary-text {
-  font-size: 14px;
-  color: #2c3e50;
+.score-summary span {
+  color: #55708f;
+  font-size: 13px;
 }
 
-.summary-text strong {
-  font-size: 18px;
-  color: #1e3a5f;
+.score-summary strong {
+  color: #17375f;
+  font-size: 28px;
+  line-height: 1.1;
 }
 
-/* 年级选择 */
+.score-summary small {
+  color: #7f94aa;
+  line-height: 1.5;
+}
+
+.preference-grid {
+  display: grid;
+  grid-template-columns: 0.8fr 1.2fr;
+  gap: 16px;
+  align-items: start;
+}
+
 .grade-group {
   width: 100%;
-  display: flex;
-  gap: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
 }
 
 .grade-group :deep(.el-radio-button__inner) {
-  border-radius: 0;
-  padding: 12px 28px;
-  font-size: 14px;
-  border-color: #e8e4db;
-  background: #faf9f7;
-  color: #5a6d7e;
-  transition: all 0.3s;
-}
-
-.grade-group :deep(.el-radio-button:first-child .el-radio-button__inner) {
-  border-radius: 10px 0 0 10px;
-  border-left: 1px solid #e8e4db;
-}
-
-.grade-group :deep(.el-radio-button:last-child .el-radio-button__inner) {
-  border-radius: 0 10px 10px 0;
-}
-
-.grade-group :deep(.el-radio-button.is-checked .el-radio-button__inner) {
-  background: #1e3a5f;
-  border-color: #1e3a5f;
-  color: #ffffff;
+  width: 100%;
+  border: 1px solid #dce6f2;
+  border-radius: 12px !important;
+  background: #ffffff;
+  color: #526b86;
   box-shadow: none;
 }
 
-/* 感兴趣的活动类型 */
-.interest-item {
-  margin-bottom: 32px;
+.grade-group :deep(.el-radio-button:first-child .el-radio-button__inner) {
+  border-left: 1px solid #dce6f2;
 }
 
-.interest-item :deep(.el-form-item__content) {
-  flex-direction: column;
-  align-items: flex-start;
+.grade-group :deep(.el-radio-button.is-checked .el-radio-button__inner) {
+  background: #17375f;
+  border-color: #17375f;
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(23, 55, 95, 0.22);
 }
 
-.interest-label-sub {
-  font-size: 13px;
-  color: #8b9aab;
-  margin-bottom: 12px;
-}
-
-.interest-list {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+.interest-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
   width: 100%;
 }
 
-.interest-checkbox {
-  width: 100%;
+.interest-card {
   margin: 0 !important;
+  height: auto;
 }
 
-.interest-checkbox :deep(.el-checkbox__label) {
+.interest-card :deep(.el-checkbox__input) {
+  align-self: flex-start;
+  margin-top: 3px;
+}
+
+.interest-card :deep(.el-checkbox__label) {
   width: 100%;
-  padding: 10px 14px;
-  border-radius: 8px;
-  transition: all 0.2s;
-}
-
-.interest-checkbox :deep(.el-checkbox__label:hover) {
-  background: #faf9f7;
-}
-
-.interest-checkbox :deep(.el-checkbox.is-checked .el-checkbox__label) {
-  background: #e8f0f8;
-}
-
-.checkbox-content {
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #ffffff;
+  border: 1px solid #dce6f2;
   display: flex;
   flex-direction: column;
   gap: 2px;
+  transition: all 0.2s ease;
 }
 
-.checkbox-name {
-  font-size: 14px;
-  font-weight: 500;
-  color: #2c3e50;
+.interest-card :deep(.el-checkbox__label:hover) {
+  border-color: #2f6fa5;
+  background: #f7fbff;
 }
 
-.checkbox-desc {
+.interest-card :deep(.el-checkbox.is-checked .el-checkbox__label) {
+  background: #eaf4ff;
+  border-color: #2f6fa5;
+}
+
+.interest-name {
+  color: #243a52;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.interest-desc {
+  color: #7e91a5;
   font-size: 12px;
-  color: #8b9aab;
 }
 
-/* 提交按钮 */
-.submit-item {
-  margin-top: 36px;
-  margin-bottom: 0;
-}
-
-.submit-item :deep(.el-form-item__content) {
-  justify-content: center;
+.submit-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 8px;
+  padding-top: 14px;
+  border-top: 1px solid #edf2f7;
 }
 
 .submit-btn {
-  width: 200px;
-  height: 48px;
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: 8px;
-  border-radius: 12px;
-  background: #1e3a5f;
+  min-width: 170px;
+  height: 46px;
   border: none;
-  transition: all 0.3s;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #17375f, #2d6c9f);
+  box-shadow: 0 12px 26px rgba(23, 55, 95, 0.24);
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 1px;
 }
 
 .submit-btn:hover {
-  background: #2a4f7a;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(30, 58, 95, 0.35);
+  transform: translateY(-1px);
+  box-shadow: 0 16px 30px rgba(23, 55, 95, 0.3);
 }
 
-.submit-btn:active {
-  transform: translateY(0);
-}
-
-/* 底部提示 */
 .footer-hint {
-  text-align: center;
-  margin-top: 24px;
-  padding-top: 16px;
-  border-top: 1px solid #f0ece6;
-}
-
-.footer-hint p {
+  color: #7f94aa;
   font-size: 12px;
-  color: #8b9aab;
-  margin-bottom: 4px;
+  margin: 0;
+  text-align: right;
 }
 
 .footer-hint code {
-  background: #f0ece6;
-  padding: 2px 8px;
-  border-radius: 4px;
-  color: #1e3a5f;
-  font-size: 12px;
+  padding: 2px 7px;
+  border-radius: 8px;
+  background: #eef4fb;
+  color: #17375f;
+  font-weight: 700;
 }
 
-/* 响应式 */
-@media (max-width: 560px) {
-  .login-card {
-    padding: 36px 24px;
+.form-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.form-panel::-webkit-scrollbar-thumb {
+  background: rgba(23, 55, 95, 0.18);
+  border-radius: 999px;
+}
+
+@media (max-width: 900px) {
+  .login-page {
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
   }
 
-  .form-row {
+  .login-shell {
+    grid-template-columns: 1fr;
+    max-height: none;
+  }
+
+  .brand-panel {
+    padding: 28px;
+  }
+
+  .feature-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 680px) {
+  .login-page {
+    padding: 14px;
+  }
+
+  .form-panel {
+    padding: 24px 18px;
+  }
+
+  .top-fields,
+  .score-block,
+  .preference-grid,
+  .interest-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .submit-row {
     flex-direction: column;
     align-items: stretch;
-    gap: 8px;
   }
 
-  .form-label {
-    width: auto;
-    text-align: left;
-  }
-
-  .score-row {
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .grade-group :deep(.el-radio-button__inner) {
-    padding: 10px 18px;
-    font-size: 13px;
-  }
-
-  .submit-btn {
-    width: 100%;
-    letter-spacing: 4px;
+  .footer-hint {
+    text-align: center;
   }
 }
 </style>
