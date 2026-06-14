@@ -9,7 +9,7 @@
         <div class="brand-main">
           <div class="brand-icon">🎓</div>
           <h1>综测服务智能体</h1>
-          <p>查活动、算综测、做规划、设提醒，一个入口搞定，终于不用在表格和通知群里考古了。</p>
+          <p>查活动、算综测、做规划、设提醒，一个入口搞定，让综测信息查询和活动选择更直观。</p>
         </div>
 
         <div class="feature-grid">
@@ -89,7 +89,7 @@
           <template v-if="!isAdmin">
             <div class="section-head">
               <span>首次登录信息</span>
-              <small>全部内容压缩在一屏里，终于不用滚动考验鼠标寿命。</small>
+              <small>系统会自动记住上次登录的学号和QQ，下次进入时可直接回填。</small>
             </div>
 
             <div class="score-block">
@@ -198,9 +198,20 @@ const router = useRouter()
 const loginFormRef = ref(null)
 const loading = ref(false)
 
+const readLastLogin = () => {
+  try {
+    return JSON.parse(localStorage.getItem('lastLoginInfo') || '{}')
+  } catch (err) {
+    console.warn('读取上次登录信息失败:', err)
+    return {}
+  }
+}
+
+const lastLoginInfo = readLastLogin()
+
 const form = reactive({
-  studentId: '',
-  qq: '',
+  studentId: lastLoginInfo.studentId || '',
+  qq: lastLoginInfo.qq || '',
   grade: '',
   scoreA: 50,
   scoreB: 50,
@@ -282,6 +293,10 @@ const handleLogin = async () => {
         }
 
         const data = await res.json()
+        localStorage.setItem('lastLoginInfo', JSON.stringify({
+          studentId: form.studentId,
+          qq: form.qq
+        }))
         localStorage.setItem('studentInfo', JSON.stringify({
           studentId: data.student_id,
           name: data.name,
