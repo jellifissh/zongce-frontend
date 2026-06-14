@@ -20,10 +20,4 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
-/* 去掉登录页和学生端里过于口语化的说明文案 */
-.section-head small,
-.hero-panel p {
-  display: none !important;
-}
 </style>
